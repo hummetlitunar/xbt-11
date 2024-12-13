@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hastalık Kodları</title>
+    <style>
+        /* Genel Stil */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f5f9;
+            color: #2c3e50;
+            margin: 0;
+            padding-top: 90px; /* Arama kutusunun altında düzgün bir boşluk bırakmak için */
+            overflow-x: hidden; /* Sağdan sola kaymayı engellemek */
+        }
+
+        /* Karanlık Tema */
+        .dark-theme {
+            background-color: #2c3e50;
+            color: #f1f5f9; /* Yazı rengi */
+        }
+
+        body.dark-theme {
+            background-color: #283a4b;
+        }
+
+        .dark-theme h1 {
+            background-color: #34495e;
+        }
+
+        .dark-theme #search-container {
+            background-color: #34495e;
+        }
+
+        .dark-theme #hastalik-listesi {
+            background-color: #34495e;
+            color: #f1f5f9;
+        }
+
+        .dark-theme li {
+            background-color: #2c3e50;
+            color: #f1f5f9;
+        }
+
+        .dark-theme li:hover {
+            background-color: #3c5f7a;
+        }
+
+        .dark-theme #reset-button {
+            background-color: #34495e;
+            color: #f1f5f9;
+            border: 2px solid #2980b9;
+        }
+
+        .dark-theme #search-input {
+            background-color: #34495e;
+            color: #f1f5f9;
+
+        }
+
+        .dark-theme #reset-button:hover {
+            background-color: #2980b9;
+            color: #ffffff;
+        }
+
+        .dark-theme #back-button {
+            background-color: #34495e;
+            color: #f1f5f9;
+            border: none;
+        }
+
+        .dark-theme #back-button:hover {
+            background-color: #2980b9;
+        }
+
+        .dark-theme h1, .dark-theme span {
+            color: #f1f5f9; /* Başlık ve açıklama metinlerinin rengi */
+        }
+
+       /* Başlık */
+     h1 {
+    text-align: center;
+    color: #3498db;
+    font-size: 2.5rem;
+    font-weight: bold;
+    height: 80px;
+    line-height: 80px;  /* Yüksekliğiyle uyumlu, tek satırda dikey ortalama sağlar */
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;  /* Flexbox ile ortalama yapar */
+    justify-content: center;  /* Yatayda ortalar */
+    align-items: center;      /* Dikeyde ortalar */
+       }
+
+
+        /* Arama Kısmı */
+        #search-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #search-input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+        }
+
+        #reset-button {
+            padding: 10px 15px;
+            margin-left: 10px;
+            margin-right: 20px;
+            font-size: 16px;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            background-color: #ffffff;
+            color: #3498db;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #reset-button:hover {
+            background-color: #3498db;
+            color: #ffffff;
+        }
+
+        /* Liste Konteyneri */
+        #hastalik-listesi {
+            position: fixed;
+            top: 80px;
+            left: 0; /* Silinmə ehtimallı */
+            width: 100%;
+            max-width: 94%;
+            height: 85%;
+            margin: 0;
+            background-color: #ffffff;
+            padding: 20px; /* Silinmə ehtimallı */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            max-height: calc(100vh - 160px);
+            z-index: 50;
+        }
+
+        /* Liste Öğeleri */
+        li {
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 7px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        li:hover {
+            background-color: #ecf0f1;
+        }
+
+        li span {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Alt alt kategori */
+        li.subcategory {
+            padding-left: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Geri Tuşu */
+        #back-button {
+            background-color: #ffffff;
+            color: #3498db;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        #back-button.visible {
+            display: block;
+        }
+
+        #back-button:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Tema Değiştir Butonu - Sabit Sağ Alt */
+        #theme-toggle-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #theme-toggle-button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Responsive Düzenlemeler */
+        @media (max-width: 968px) {
+            #hastalik-listesi {
+                width: 100%;
+                margin: 90px auto 20px;
+                padding: 15px;
+                max-height: 68%;
+            }
+
+            h1 {     /*xbt hissəsi*/
+                font-size: 0.9rem;
+                height: 70px;
+                line-height: 23px;
+            }
+
+            #search-input {
+                width: 70%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+
+<div id="search-container">
+    <input type="text" id="search-input" placeholder="Axtarış et...">
+    <button id="reset-button">
+        <i class="fas fa-undo" style="color: #79b030;"></i>
+    </button>
+</div>
+
+<h1 id="main-title">XBT-10 (by Tunar Hümmətli)</h1>
+<button id="back-button" class="hidden">Geri</button>
+
+<div id="hastalik-listesi">
+    <!-- Dinamik içerik buraya yüklenecek -->
+</div>
+
+<button id="theme-toggle-button">Temanı Dəyiş</button>
+
+<script>
+    document.getElementById('theme-toggle-button').addEventListener('click', function() {
+        document.body.classList.toggle('dark-theme');
+    });
+
+    fetch('https://raw.githubusercontent.com/hummetlitunar/xbt-11/main/data2.json')
+        .then(response => response.json())
+        .then(data => {
+            const diseaseData = data.data;
+            const listContainer = document.getElementById('hastalik-listesi');
+            const backButton = document.getElementById('back-button');
+            const searchInput = document.getElementById('search-input');
+            const resetButton = document.getElementById('reset-button');
+            const mainTitle = document.getElementById('main-title');
+
+            // Navigasyon yığını
+            const navigationStack = [];
+
+            // Listeyi render et
+            function renderList(items, showDecimals = false, showSubDecimals = false) {
+                listContainer.innerHTML = ''; // Mevcut listeyi temizle
+
+                const filteredItems = showDecimals
+                    ? items.filter(item => /\.\d+$/.test(item.code))
+                    : items.filter(item => !/\.\d+$/.test(item.code));
+
+                filteredItems.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `<span>${item.code}</span> - ${item.description}`;
+
+                    listItem.addEventListener('click', () => {
+                        const subItems = items.filter(subItem =>
+                            subItem.code.startsWith(item.code) && subItem.code !== item.code
+                        );
+                        if (subItems.length > 0) {
+                            mainTitle.innerHTML = `${item.code} - ${item.description}`;
+                            navigationStack.push(items);
+                            renderList(subItems, true, true);
+                            backButton.classList.add('visible');
+                        } else {
+                            mainTitle.innerHTML = `${item.code} - ${item.description}`; // Başlık güncelle
+                        }
+                    });
+
+                    listContainer.appendChild(listItem);
+                });
+            }
+
+            // Başlangıçta ana kategorileri render et
+            function renderMainCategories(data) {
+                listContainer.innerHTML = '';
+                backButton.classList.remove('visible');
+                mainTitle.innerHTML = 'XBT-10 (by Tunar Hümmətli)';
+
+                for (const key in data) {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `<span>${key}</span>`;
+
+                    // Karanlık modda yazı rengini beyaz yapalım
+                    if (document.body.classList.contains('dark-theme')) {
+                        listItem.style.color = '#f1f5f9'; // Yazıyı beyaz yap
+                    }
+
+                    listItem.addEventListener('click', () => {
+                        navigationStack.push(Object.entries(data));
+                        renderList(data[key], false);
+                        backButton.classList.add('visible');
+                    });
+
+                    listContainer.appendChild(listItem);
+                }
+            }
+
+            // Geri tuşu işlevi
+            backButton.addEventListener('click', () => {
+                const previousState = navigationStack.pop();
+                if (previousState) {
+                    renderList(previousState);
+                }
+                if (navigationStack.length === 0) {
+                    backButton.classList.remove('visible');
+                    renderMainCategories(diseaseData);
+                }
+            });
+
+            // Arama işlevi
+           searchInput.addEventListener('input', function () {
+    const searchQuery = searchInput.value.toLowerCase();
+
+    let currentDisplayedList;
+    if (navigationStack.length > 0) {
+        const lastIndex = navigationStack.length - 1;
+        currentDisplayedList = navigationStack[lastIndex];
+        if (Array.isArray(currentDisplayedList) && typeof currentDisplayedList[0][1] === 'object'){
+            currentDisplayedList = currentDisplayedList.map(item => item[1]).flat();
+        }
+    } else {
+        let flattenedData = [];
+        for (const key in diseaseData) {
+            if (diseaseData.hasOwnProperty(key)) {
+                flattenedData = flattenedData.concat(diseaseData[key]);
+            }
+        }
+        currentDisplayedList = flattenedData;
+    }
+
+
+    const filteredData = currentDisplayedList.filter(item =>
+        item.description.toLowerCase().includes(searchQuery) ||
+        item.code.toLowerCase().includes(searchQuery)
+    );
+
+    if (navigationStack.length === 0 && searchQuery === "") {
+        renderMainCategories(diseaseData);
+    } else {
+        renderList(filteredData);
+    }
+});
+
+
+function renderList(items) {
+    listContainer.innerHTML = '';
+
+    items.forEach(item => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `<span>${item.code}</span> - ${item.description}`;
+
+        listItem.addEventListener('click', () => {
+            const subItems = items.filter(subItem =>
+                subItem.code.startsWith(item.code) && subItem.code !== item.code
+            );
+            if (subItems.length > 0) {
+                mainTitle.innerHTML = `${item.code} - ${item.description}`;
+                navigationStack.push(items);
+                renderList(subItems);
+                backButton.classList.add('visible');
+            } else {
+                mainTitle.innerHTML = `${item.code} - ${item.description}`;
+            }
+        });
+
+        listContainer.appendChild(listItem);
+    });
+}
+
+            // Sıfırlama butonu işlevi
+            resetButton.addEventListener('click', function () {
+                renderMainCategories(diseaseData);
+                searchInput.value = '';
+            });
+
+            renderMainCategories(diseaseData);
+        });
+</script>
+
+</body>
+</html>
