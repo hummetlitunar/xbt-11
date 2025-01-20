@@ -4,7 +4,7 @@
 
     "A00-B99 : Bəzi infeksion və parazitar xəstəliklər":
     [
-      { "code": "A00", "description": "Vəbaaa" },
+      { "code": "A00", "description": "Vəbaa" },
       { "code": "A00.0", "description": "Vibrio cholerae 01 vəba vibrionlarının törətdiyi vəba" },
       { "code": "A00.1", "description": "Vibrio cholerae El Tor 01 vəba vibrionlarının törətdiyi vəba" },
       { "code": "A00.9", "description": "Dəqiqləşdirilməmiş vəba" },
