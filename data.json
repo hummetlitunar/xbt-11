@@ -8728,7 +8728,7 @@
       { "code": "S99", "description": "Aşağı ətraf qurşağı və ayağın digər və dəqiqləşdirilməmiş travmaları" },
       { "code": "S99.7", "description": "Aşağı ətraf qurşağı və ayağın çox saylı travmaları" },
       { "code": "S99.8", "description": "Aşağı ətraf qurşağı və ayağın digər dəqiqləşdirilmiş travmaları" },
-      { "code": "S99.9", "description": "Aşağı ətraf qurşağı və ayağın dəqiqləşdirilməmiş travması" }
+      { "code": "S99.9", "description": "Aşağı ətraf qurşağı və ayağın dəqiqləşdirilməmiş travması" },
       { "code": "T00", "description": "Bədənin bir neçə nahiyəsini əhatə edən səthi travmalar" },
   { "code": "T00.0", "description": "Başın və boynun səthi travmaları" },
   { "code": "T00.1", "description": "Döş qəfəsinin, qarnın, beldən aşağı hissənin və çanağın səthi travmaları" },
